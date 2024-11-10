@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surgical Services</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Body and Layout Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #1a1cc4;
+    }
+
+    /* Header Section */
+    h1 {
+      text-align: center;
+      color: #f1f5f8;
+      margin: 40px 0;
+      font-size: 2.5em;
+    }
+
+    /* Gradient Background for Surgical Services Section */
+    .services-container {
+      background: linear-gradient(to right, #3498db, #8e44ad);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+    }
+
+    /* Service Card Styling */
+    .service-card {
+      position: relative;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(143, 92, 92, 0.2);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* Ensures spacing between content */
+      align-items: center; /* Centers content horizontally */
+      text-align: center;
+      padding: 20px;
+    }
+
+    .service-card .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1; /* Ensures card content takes up remaining space */
+    }
+
+    .service-card .card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+      transition: transform 0.6s;
+    }
+
+    .service-card:hover .card-content {
+      transform: rotateY(180deg);
+    }
+
+    .service-card:hover .card-back {
+      transform: rotateY(0deg);
+    }
+
+    .service-card h3 {
+      font-size: 1.8em;
+      color: #3498db;
+      margin-bottom: 15px;
+    }
+
+    .service-card p {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .service-card .card-back p {
+      color: #ecf0f1;
+    }
+
+    .service-card button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .service-card button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Hover Effect for Card */
+    .service-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 2em;
+      }
+    }
+
+    /* Back to Home Button */
+    .back-btn {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-btn button {
+      background-color: #3498db;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-btn button a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .back-btn button:hover {
+      background-color: #2980b9;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Surgical Services We Offer</h1>
+
+  <div class="services-container">
+    <div class="services-grid">
+
+      <!-- Orthopedic Surgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-bone fa-3x" style="color: #3498db;"></i>
+          <h3>Orthopedic Surgery</h3>
+          <p>Expert care for bone, joint, and musculoskeletal conditions.</p>
+        </div>
+        <div class="card-back">
+          <p>Fractures, arthritis, sports injuries, joint replacements.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+      <!-- Cardiothoracic Surgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-heartbeat fa-3x" style="color: #e74c3c;"></i>
+          <h3>Cardiothoracic Surgery</h3>
+          <p>Heart and lung surgeries for improved health.</p>
+        </div>
+        <div class="card-back">
+          <p>Valve repairs, bypass surgery, lung resections.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+      <!-- General Surgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-scalpel fa-3x" style="color: #f39c12;"></i>
+          <h3>General Surgery</h3>
+          <p>Comprehensive surgical treatments for various conditions.</p>
+        </div>
+        <div class="card-back">
+          <p>Appendectomies, gallbladder surgery, hernia repairs.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+      <!-- Neurosurgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-brain fa-3x" style="color: #9b59b6;"></i>
+          <h3>Neurosurgery</h3>
+          <p>Advanced procedures for brain and spine conditions.</p>
+        </div>
+        <div class="card-back">
+          <p>Spinal fusions, brain tumor removal, neurological disorders.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+      <!-- Plastic Surgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-user-md fa-3x" style="color: #2ecc71;"></i>
+          <h3>Plastic Surgery</h3>
+          <p>Reconstructive and aesthetic surgery for a better appearance.</p>
+        </div>
+        <div class="card-back">
+          <p>Facelifts, breast augmentation, reconstructive surgery.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+      <!-- Urology Surgery -->
+      <div class="service-card">
+        <div class="card-content">
+          <i class="fas fa-blind fa-3x" style="color: #16a085;"></i>
+          <h3>Urology Surgery</h3>
+          <p>Treatments for urinary tract and kidney conditions.</p>
+        </div>
+        <div class="card-back">
+          <p>Kidney stones, prostate surgery, bladder disorders.</p>
+          <button>Learn More</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Back to Home Page Button -->
+  <div class="back-btn">
+    <button><a href="lifecare2.html">Back to HomePage</a></button>
+  </div>
+
+</body>
+</html>
+
+

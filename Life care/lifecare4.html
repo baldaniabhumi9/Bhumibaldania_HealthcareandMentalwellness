@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Nearest Hospital</title>
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #c4e1f8, #a8e2ec);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #fcfaf8;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #FFFCF9;
+        }
+
+        button {
+            padding: 15px 25px;
+            background-color: #9e7db1;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a4d9ee;
+        }
+
+        #hospital-info p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #loading-spinner {
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #160303;
+            border-top: 5px solid #96c0f0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #error-message {
+            margin-top: 20px;
+            color: #98caeb;
+            font-size: 18px;
+            background-color: rgba(229, 170, 245, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Find Your Nearest Hospital</h1>
+        
+        <!-- Button to detect the user's location -->
+        <button id="get-location-btn" class="btn-primary">Get Nearest Hospital</button>
+        
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="hidden"></div>
+        
+        <!-- Section to display the result -->
+        <div id="hospital-info" class="hidden">
+            <h2>Nearest Hospital</h2>
+            <p><strong>Hospital Name:</strong> <span id="hospital-name"></span></p>
+            <p><strong>Address:</strong> <span id="hospital-address"></span></p>
+            <p><strong>Contact:</strong> <span id="hospital-contact"></span></p>
+            <p><strong>Distance:</strong> <span id="hospital-distance"></span> km</p>
+        </div>
+        
+        <!-- Error Message Section -->
+        <div id="error-message" class="hidden">
+            <p>Error: Unable to retrieve location.</p>
+        </div>
+    </div>
+   
+    <script>
+        // Sample hospital data with latitudes, longitudes, and other details
+        const hospitals = [
+            {
+                name: 'City Hospital',
+                address: '123 Main St, Cityville',
+                contact: '123-456-7890',
+                lat: 40.7128,
+                lon: -74.0060
+            },
+            {
+                name: 'Riverside Medical Center',
+                address: '456 Riverside Ave, Rivertown',
+                contact: '987-654-3210',
+                lat: 40.7306,
+                lon: -73.9352
+            },
+            {
+                name: 'Greenfield Hospital',
+                address: '789 Greenfield Rd, Springtown',
+                contact: '555-123-4567',
+                lat: 40.7580,
+                lon: -73.9855
+            }
+            // Add more hospitals as needed
+        ];
+
+        // Haversine formula to calculate distance between two points (in km)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of Earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+            return distance;
+        }
+
+        // Function to get the user's current location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showLocation, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Success callback for geolocation
+        function showLocation(position) {
+            const patientLat = position.coords.latitude;
+            const patientLon = position.coords.longitude;
+
+            // Show loading spinner while finding the nearest hospital
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            document.getElementById('hospital-info').classList.add('hidden');
+            document.getElementById('error-message').classList.add('hidden');
+
+            // Find the nearest hospital
+            let nearestHospital = null;
+            let minDistance = Infinity;
+
+            hospitals.forEach(hospital => {
+                const distance = calculateDistance(patientLat, patientLon, hospital.lat, hospital.lon);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestHospital = hospital;
+                }
+            });
+
+            // Hide the loading spinner after processing
+            document.getElementById('loading-spinner').classList.add('hidden');
+
+            // Show the nearest hospital details
+            if (nearestHospital) {
+                document.getElementById('hospital-name').textContent = nearestHospital.name;
+                document.getElementById('hospital-address').textContent = nearestHospital.address;
+                document.getElementById('hospital-contact').textContent = nearestHospital.contact;
+                document.getElementById('hospital-distance').textContent = minDistance.toFixed(2);
+
+                document.getElementById('hospital-info').classList.remove('hidden');
+                
+            }
+            
+        }
+
+        // Error callback for geolocation
+        function showError(error) {
+            document.getElementById('loading-spinner').classList.add('hidden');
+            document.getElementById('hospital-info').classList.add('hidden');
+            
+            // Display error message based on the error type
+            document.getElementById('error-message').classList.remove('hidden');
+        }
+
+        // Button to trigger location detection
+        document.getElementById('get-location-btn').addEventListener('click', function () {
+            getLocation();
+        });
+
+        // Ensure the button is enabled when the page loads
+        document.getElementById('get-location-btn').disabled = false; // in case you ever disabled it in the JS code
+        document.getElementById('get-location-btn').disabled = false;
+
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=5.0">
+    <title>Call Nearest Hospital</title>
+    <style>
+        button {
+            font-size: 16px;
+            padding: 20px 30px;
+            cursor: pointer;
+            background-color: #4651f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #458ea0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Call Nearest Hospital</h1>
+    <button id="callHospitalButton">Call Nearest Hospital</button>
+
+    <script>
+        // Example hospital phone number (you can replace this with actual data)
+        const hospitalPhoneNumber = "+919076859708";  // Replace with the nearest hospital's phone number
+
+        // Function to simulate calling the nearest hospital
+        document.getElementById('callHospitalButton').addEventListener('click', function() {
+            // Open the phone's dialer with the hospital's phone number
+            window.location.href = `tel:${hospitalPhoneNumber}`;
+        });
+    </script>
+   <button> <h4><a href="lifecare2.html">Back to HomePage</a></h4> </button>
+</body>
+</html>
